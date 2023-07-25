@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/nggrjh/go-feature-manager/collector"
 	"github.com/nggrjh/go-feature-manager/manager"
 )
 
@@ -27,15 +28,20 @@ func NewFeature(config *featureConfiguration, options ...Option) *feature {
 		f.manager = opt.manager
 	}
 
+	if opt.collector != nil {
+		f.collector = opt.collector
+	}
+
 	f.name = config.buildName()
 	f.fallback = opt.fallback
 	return f
 }
 
 type feature struct {
-	manager  manager.FeatureManager
-	name     string
-	fallback bool
+	manager   manager.FeatureManager
+	collector collector.FeatureCollector
+	name      string
+	fallback  bool
 }
 
 func (f *feature) IsEnabled() bool {
