@@ -3,6 +3,7 @@ package feature
 import (
 	"encoding/json"
 	"fmt"
+	"strconv"
 	"strings"
 	"time"
 
@@ -34,28 +35,46 @@ func NewFeature(config *featureConfiguration, options ...Option) *feature {
 	}
 
 	f.name = config.buildName()
+	f.category = config.category
+	f.releaseTime = config.creationTime
 	f.fallback = opt.fallback
 	return f
 }
 
 type feature struct {
-	manager   manager.FeatureManager
-	collector collector.FeatureCollector
-	name      string
-	fallback  bool
+	manager     manager.FeatureManager
+	collector   collector.FeatureCollector
+	name        string
+	category    categoryType
+	releaseTime time.Time
+	fallback    bool
 }
 
 func (f *feature) IsEnabled() bool {
-	return f.manager.IsEnabled(f.name, f.fallback)
+	start := time.Now()
+	isEnabled := f.manager.IsEnabled(f.name, f.fallback)
+	duration := time.Since(start)
+
+	if f.collector != nil {
+		f.collect(f.name, isEnabled, duration)
+	}
+
+	return isEnabled
 }
 
 func (f *feature) String() string {
 	b, _ := json.Marshal(map[string]any{
-		"manager":  f.manager.String(),
-		"name":     f.name,
-		"fallback": f.fallback,
+		"manager":     f.manager.String(),
+		"name":        f.name,
+		"category":    f.category.String(),
+		"releaseTime": f.releaseTime.String(),
+		"fallback":    f.fallback,
 	})
 	return string(b)
+}
+
+func (f *feature) collect(name string, evaluation bool, duration time.Duration) {
+	f.collector.Observe(duration, time.Since(f.releaseTime), name, f.category.String(), strconv.FormatBool(evaluation))
 }
 
 func NewConfiguration(app, behaviour string, category categoryType, creationTime time.Time) *featureConfiguration {
