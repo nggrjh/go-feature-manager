@@ -3,6 +3,7 @@ package feature
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/golang/mock/gomock"
 
@@ -12,10 +13,11 @@ import (
 func Test_feature_IsEnabled(t *testing.T) {
 	t.Parallel()
 	type fields struct {
-		app       string
-		behaviour string
-		category  categoryType
-		fallback  *bool
+		app          string
+		behaviour    string
+		category     categoryType
+		creationTime time.Time
+		fallback     *bool
 	}
 	type expectIsEnabled struct {
 		name       string
@@ -95,7 +97,7 @@ func Test_feature_IsEnabled(t *testing.T) {
 			}
 
 			f := NewFeature(
-				NewConfiguration(tt.fields.app, tt.fields.behaviour, tt.fields.category),
+				NewConfiguration(tt.fields.app, tt.fields.behaviour, tt.fields.category, tt.fields.creationTime),
 				opts...,
 			)
 			if got := f.IsEnabled(); got != tt.want {
@@ -108,9 +110,10 @@ func Test_feature_IsEnabled(t *testing.T) {
 func Test_featureConfiguration_buildName(t *testing.T) {
 	t.Parallel()
 	type fields struct {
-		app       string
-		behaviour string
-		category  categoryType
+		app          string
+		behaviour    string
+		category     categoryType
+		creationTime time.Time
 	}
 	tests := map[string]struct {
 		fields fields
@@ -141,6 +144,7 @@ func Test_featureConfiguration_buildName(t *testing.T) {
 				tt.fields.app,
 				tt.fields.behaviour,
 				tt.fields.category,
+				tt.fields.creationTime,
 			)
 			if got := fc.buildName(); got != tt.want {
 				t.Errorf("buildName() = %v, want %v", got, tt.want)

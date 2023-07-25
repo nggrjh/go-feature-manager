@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/nggrjh/go-feature-manager/collector"
 	"github.com/nggrjh/go-feature-manager/manager"
@@ -57,18 +58,20 @@ func (f *feature) String() string {
 	return string(b)
 }
 
-func NewConfiguration(app, behaviour string, category categoryType) *featureConfiguration {
+func NewConfiguration(app, behaviour string, category categoryType, creationTime time.Time) *featureConfiguration {
 	return &featureConfiguration{
-		app:       app,
-		behaviour: behaviour,
-		category:  category,
+		app:          app,
+		behaviour:    behaviour,
+		category:     category,
+		creationTime: creationTime,
 	}
 }
 
 type featureConfiguration struct {
-	app       string
-	behaviour string
-	category  categoryType
+	app          string
+	behaviour    string
+	category     categoryType
+	creationTime time.Time
 }
 
 func (fc *featureConfiguration) buildName() string {
