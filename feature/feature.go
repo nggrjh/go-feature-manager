@@ -10,7 +10,7 @@ import (
 
 //go:generate mockgen -source=feature.go -destination=mock/feature.go -package=mock
 
-type IFeature interface {
+type Feature interface {
 	IsEnabled() bool
 	String() string
 }

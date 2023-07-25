@@ -10,31 +10,31 @@ import (
 	gomock "github.com/golang/mock/gomock"
 )
 
-// MockIFeature is a mock of IFeature interface.
-type MockIFeature struct {
+// MockFeature is a mock of Feature interface.
+type MockFeature struct {
 	ctrl     *gomock.Controller
-	recorder *MockIFeatureMockRecorder
+	recorder *MockFeatureMockRecorder
 }
 
-// MockIFeatureMockRecorder is the mock recorder for MockIFeature.
-type MockIFeatureMockRecorder struct {
-	mock *MockIFeature
+// MockFeatureMockRecorder is the mock recorder for MockFeature.
+type MockFeatureMockRecorder struct {
+	mock *MockFeature
 }
 
-// NewMockIFeature creates a new mock instance.
-func NewMockIFeature(ctrl *gomock.Controller) *MockIFeature {
-	mock := &MockIFeature{ctrl: ctrl}
-	mock.recorder = &MockIFeatureMockRecorder{mock}
+// NewMockFeature creates a new mock instance.
+func NewMockFeature(ctrl *gomock.Controller) *MockFeature {
+	mock := &MockFeature{ctrl: ctrl}
+	mock.recorder = &MockFeatureMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockIFeature) EXPECT() *MockIFeatureMockRecorder {
+func (m *MockFeature) EXPECT() *MockFeatureMockRecorder {
 	return m.recorder
 }
 
 // IsEnabled mocks base method.
-func (m *MockIFeature) IsEnabled() bool {
+func (m *MockFeature) IsEnabled() bool {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "IsEnabled")
 	ret0, _ := ret[0].(bool)
@@ -42,13 +42,13 @@ func (m *MockIFeature) IsEnabled() bool {
 }
 
 // IsEnabled indicates an expected call of IsEnabled.
-func (mr *MockIFeatureMockRecorder) IsEnabled() *gomock.Call {
+func (mr *MockFeatureMockRecorder) IsEnabled() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IsEnabled", reflect.TypeOf((*MockIFeature)(nil).IsEnabled))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IsEnabled", reflect.TypeOf((*MockFeature)(nil).IsEnabled))
 }
 
 // String mocks base method.
-func (m *MockIFeature) String() string {
+func (m *MockFeature) String() string {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "String")
 	ret0, _ := ret[0].(string)
@@ -56,7 +56,7 @@ func (m *MockIFeature) String() string {
 }
 
 // String indicates an expected call of String.
-func (mr *MockIFeatureMockRecorder) String() *gomock.Call {
+func (mr *MockFeatureMockRecorder) String() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "String", reflect.TypeOf((*MockIFeature)(nil).String))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "String", reflect.TypeOf((*MockFeature)(nil).String))
 }
